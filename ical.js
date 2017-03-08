@@ -33,9 +33,9 @@
     for (var i = 0; i<p.length; i++){
       if (p[i].indexOf('=') > -1){
         var segs = p[i].split('=');
-        
+
         out[segs[0]] = parseValue(segs.slice(1).join('='));
-        
+
       }
     }
     return out || sp
@@ -44,7 +44,7 @@
   var parseValue = function(val){
     if ('TRUE' === val)
       return true;
-    
+
     if ('FALSE' === val)
       return false;
 
@@ -150,6 +150,18 @@
         newDate = addTZ(newDate, params);
     }
 
+   // date format (no time)
+    comps = /^(\d{4})(\d{2})(\d{2})$/.exec(val);
+    if (comps !== null) {
+      // No TZ info - assume same timezone as this computer
+      newDate = new Date(
+        comps[1],
+        parseInt(comps[2], 10)-1,
+        comps[3]
+      );
+
+      newDate = addTZ(newDate, params);
+    }
 
           // Store as string - worst case scenario
       return storeValParam(name)(newDate, curr)
@@ -243,7 +255,7 @@
             //scan all high level object in curr and drop all strings
             var key,
                 obj;
-            
+
             for (key in curr) {
                 if(curr.hasOwnProperty(key)) {
                    obj = curr[key];
@@ -252,10 +264,10 @@
                    }
                 }
             }
-            
+
             return curr
         }
-        
+
         var par = stack.pop()
 
         if (curr.uid)
@@ -302,7 +314,7 @@
         		// TODO:  Is there ever a case where we have to worry about overwriting an existing entry here?
 
         		// Create a copy of the current object to save in our recurrences array.  (We *could* just do par = curr,
-        		// except for the case that we get the RECURRENCE-ID record before the RRULE record.  In that case, we 
+        		// except for the case that we get the RECURRENCE-ID record before the RRULE record.  In that case, we
         		// would end up with a shared reference that would cause us to overwrite *both* records at the point
 				// that we try and fix up the parent record.)
         		var recurrenceObj = new Object();
@@ -374,7 +386,7 @@
           name = name.substring(2);
           return (storeParam(name))(val, params, ctx, stack, line);
       }
-      
+
       return storeParam(name.toLowerCase())(val, params, ctx);
     },
 
