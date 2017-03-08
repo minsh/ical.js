@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "request": "2.75.0",
-    "rrule": "2.1.0"
+    "rrule": "git://github.com/jonmaim/rrule.git#bae21f488abdcab8d975772b796959de65ad50bf"
   },
   "devDependencies": {
     "vows": "0.7.0",
